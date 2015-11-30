@@ -21,6 +21,35 @@ namespace Astrolabe
         {
             InitializeComponent();
         }
+        public Form1(String fileNameAndPath)
+        {
+            InitializeComponent();
+            openFile(fileNameAndPath);
+            
+        }
+        /// <summary>
+        /// Runs the necessary steps to open the file with path 
+        /// specified in the argument. 
+        /// Provides a single method for logic that may be called 
+        /// from several other methods.
+        /// </summary>
+        /// <param name="fileNameAndPath"></param>
+        private void openFile(String fileNameAndPath)
+        {
+            // Get the configuration item from the file specified by the user.
+            FileInfo fileInfo = new FileInfo(fileNameAndPath);
+            configItem = new ConfigurationItem(fileInfo.DirectoryName, fileInfo.Name.Replace(".config", ""), true);
+
+            // Load the data from the file.
+            nameLabel.Text = configItem.Name;
+            valueTextBox.Text = configItem.Value;
+
+            openFileLabel.Visible = false;
+            openFileButton.Visible = false;
+            saveToolStripMenuItem.Enabled = true;
+            saveAsToolStripMenuItem.Enabled = true;
+            closeToolStripMenuItem.Enabled = true;
+        }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -31,19 +60,7 @@ namespace Astrolabe
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                // Get the configuration item from the file specified by the user.
-                FileInfo fileInfo = new FileInfo(saveDialog.FileName);
-                configItem = new ConfigurationItem(fileInfo.DirectoryName, fileInfo.Name.Replace(".config", ""), true);
-
-                // Load the data from the file.
-                nameLabel.Text = configItem.Name;
-                valueTextBox.Text = configItem.Value;
-
-                openFileLabel.Visible = false;
-                openFileButton.Visible = false;
-                saveToolStripMenuItem.Enabled = true;
-                saveAsToolStripMenuItem.Enabled = true;
-                closeToolStripMenuItem.Enabled = true;
+                openFile(saveDialog.FileName);
             }
         }
 
@@ -56,19 +73,7 @@ namespace Astrolabe
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
-                // Get the configuration item from the file specified by the user.
-                FileInfo fileInfo = new FileInfo(openDialog.FileName);
-                configItem = new ConfigurationItem(fileInfo.DirectoryName, fileInfo.Name.Replace(".config", ""), true);
-
-                // Load the data from the file.
-                nameLabel.Text = configItem.Name;
-                valueTextBox.Text = configItem.Value;
-
-                openFileLabel.Visible = false;
-                openFileButton.Visible = false;
-                saveToolStripMenuItem.Enabled = true;
-                saveAsToolStripMenuItem.Enabled = true;
-                closeToolStripMenuItem.Enabled = true;
+                openFile(openDialog.FileName);
             }
         }
 
